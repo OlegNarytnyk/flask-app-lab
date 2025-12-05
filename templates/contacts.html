@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Контакти</h1>
+
+<p>Заповніть форму, щоб «надіслати» повідомлення (форма-заглушка).</p>
+
+<form class="row g-3" method="post">
+    <div class="col-md-6">
+        <label for="name" class="form-label">Ім'я</label>
+        <input type="text" class="form-control" id="name" placeholder="Ваше ім'я">
+    </div>
+    <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="you@example.com">
+    </div>
+    <div class="col-12">
+        <label for="message" class="form-label">Повідомлення</label>
+        <textarea class="form-control" id="message" rows="4"
+                  placeholder="Текст повідомлення"></textarea>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary" disabled>Надіслати (заглушка)</button>
+    </div>
+</form>
+{% endblock %}
