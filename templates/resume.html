@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 text-center">
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+             alt="Фото"
+             class="img-fluid rounded-circle mb-3 resume-photo">
+        <h2>Олег Наритник</h2>
+        <p class="text-muted">Python / Flask Developer (Student)</p>
+    </div>
+
+    <div class="col-md-8">
+        <section id="about" class="mb-4">
+            <h3>Про себе</h3>
+            <p>Студент спеціальності Software Engineering з досвідом у програмуванні, базах даних та діагностиці електроніки. Розробляю невеликі веб-рішення, автоматизацію та працюю над проєктами в університеті.</p>
+    </section>
+        </section>
+
+        <section id="education" class="mb-4">
+            <h3>Освіта</h3>
+            <ul>
+            <li><strong>Vasyl Stefanyk PNU</strong> — Software Engineering (2023 — теперішній час)</li>
+            <li><strong>Physics and Technology Lyceum</strong> — атестат з відзнакою</li>
+        </ul>
+        </section>
+
+        <section id="skills" class="mb-4">
+            <h3>Навички</h3>
+           <p><strong>Мови програмування:</strong> C, C++, Python, Java, JavaScript</p>
+        <p><strong>Технології:</strong> HTML, CSS, Bootstrap, SQL</p>
+        <p><strong>Інструменти:</strong> Git, PyCharm, Photoshop, Figma</p>
+        </section>
+
+        <p><strong>Мови програмування:</strong> C, C++, Python, Java, JavaScript</p>
+        <p><strong>Технології:</strong> HTML, CSS, Bootstrap, SQL</p>
+        <p><strong>Інструменти:</strong> Git, PyCharm, Photoshop, Figma</p>
+
+        <section id="experience" class="mb-4">
+            <h3>Досвід / Проекти</h3>
+            <ul>
+                <li>Невеликий Flask-проєкт для лабораторних</li>
+                <li>Інші проекти, які хочеш згадати</li>
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+h1, h2, h3 {
+    margin-bottom: 0.75rem;
+}
+
+.resume-photo {
+    max-width: 200px;
+}
+
+section {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+    .resume-photo {
+        max-width: 150px;
+        margin-bottom: 1rem;
+    }
+}
