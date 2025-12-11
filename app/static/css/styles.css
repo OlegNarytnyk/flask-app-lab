@@ -1,0 +1,99 @@
+/* ======= BASE STYLES ======= */
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    background: #f7f7f7;
+}
+
+/* Заголовки */
+h1, h2, h3 {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+/* Фото в резюме */
+.resume-photo {
+    max-width: 200px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+/* Секції резюме */
+section {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* ======= SIDEBAR ======= */
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: #2c3e50; /* гарний темний колір */
+    color: white;
+    padding: 1.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 0.75rem;
+}
+
+.sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background: #34495e;
+}
+
+.sidebar a.active {
+    background: #1abc9c;
+}
+
+/* ======= MAIN CONTENT AREA ======= */
+
+.main-content {
+    margin-left: 270px;
+    padding: 2rem;
+}
+
+/* ======= MOBILE VERSION ======= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .resume-photo {
+        max-width: 150px;
+    }
+}
