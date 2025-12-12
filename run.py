@@ -12,6 +12,6 @@ def resume():
 def contacts():
     return render_template("contacts.html", title="Контакти")
 
-
+from app import app
 if __name__ == "__main__":
     app.run(debug=True)

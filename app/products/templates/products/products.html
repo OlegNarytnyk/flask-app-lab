@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar">
+            <h5 class="sidebar-title">Products</h5>
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('products.list_products') }}">All products</a></li>
+                <li><a href="{{ url_for('users.greetings', name='John', age=30) }}">Greet John</a></li>
+                <li><a href="{{ url_for('users.admin') }}">Admin redirect</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h1>Product list</h1>
+        <ul class="product-list">
+            {% for p in products %}
+                <li class="product-item">
+                    <span class="product-name">{{ p.name }}</span>
+                    <span class="product-price">${{ "%.2f"|format(p.price) }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
