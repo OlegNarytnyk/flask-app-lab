@@ -91,11 +91,13 @@ def profile():
 
     cookies = dict(request.cookies)
 
+    theme = request.cookies.get("theme", "light")
     return render_template(
         "users/profile.html",
         page_title="Profile",
         username=username,
-        cookies=cookies
+        cookies=cookies,
+        theme = theme
     )
 
 
@@ -104,3 +106,14 @@ def logout():
     session.pop("user", None)
     flash("Ви вийшли з акаунту.", "info")
     return redirect(url_for("users.login"))
+
+@users_bp.route("/theme/<string:theme>")
+def set_theme(theme):
+    if theme not in ("light", "dark"):
+        flash("Невідома тема.", "warning")
+        return redirect(url_for("users.profile"))
+
+    resp = make_response(redirect(url_for("users.profile")))
+    resp.set_cookie("theme", theme, max_age=60 * 60 * 24 * 30)
+    flash(f"Тему змінено на: {theme}", "info")
+    return resp

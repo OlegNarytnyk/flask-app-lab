@@ -175,3 +175,24 @@ section {
         margin-bottom: 1rem;
     }
 }
+.profile-theme {
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.theme-light {
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+}
+
+.theme-dark {
+    background: #0f172a;
+    color: #e5e7eb;
+    border: 1px solid #334155;
+}
+
+.theme-dark a { color: #93c5fd; }
+.theme-dark .card { background: #111827; border-color: #334155; color: #e5e7eb; }
+.theme-dark .table { color: #e5e7eb; }
+.theme-dark .table thead th { color: #e5e7eb; }
