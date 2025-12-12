@@ -1,26 +1,20 @@
 {% extends "base.html" %}
+{% from "macros/forms.html" import render_field %}
 
 {% block content %}
-<h1>Контакти</h1>
+<div class="container py-4" style="max-width: 520px;">
+  <h1 class="mb-3">Контакти</h1>
 
-<p>Заповніть форму, щоб «надіслати» повідомлення.</p>
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
 
-<form class="row g-3" method="post">
-    <div class="col-md-6">
-        <label for="name" class="form-label">Ім'я</label>
-        <input type="text" class="form-control" id="name" placeholder="Ваше ім'я">
-    </div>
-    <div class="col-md-6">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="you@example.com">
-    </div>
-    <div class="col-12">
-        <label for="message" class="form-label">Повідомлення</label>
-        <textarea class="form-control" id="message" rows="4"
-                  placeholder="Текст повідомлення"></textarea>
-    </div>
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary" disabled>Надіслати</button>
-    </div>
-</form>
+    {{ render_field(form.name) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.phone) }}
+    {{ render_field(form.subject) }}
+    {{ render_field(form.message, rows=5) }}
+
+    <button class="btn btn-dark w-100" type="submit">Send</button>
+  </form>
+</div>
 {% endblock %}
