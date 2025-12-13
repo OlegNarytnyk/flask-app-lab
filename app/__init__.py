@@ -1,15 +1,15 @@
-from flask import Flask
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "dev-secret-key"
-
-import os
-from . import views
-from .users import users_bp
-from .products import products_bp
-
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
-app.register_blueprint(users_bp, url_prefix="/users")
-app.register_blueprint(products_bp, url_prefix="/products")
+# app/__init__.py
+from flask import Flask, render_template
+from .config import DevelopmentConfig
 
 
+def create_app(config_class=DevelopmentConfig):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    # 404 handler
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template("404.html"), 404
+
+    return app

@@ -1,17 +1,7 @@
-from flask import Flask, render_template
+# run.py
+from app import create_app
 
-app = Flask(__name__)
+app = create_app()
 
-
-@app.route("/")
-def resume():
-    return render_template("resume.html", title="Резюме")
-
-
-@app.route("/contacts", methods=["GET"])
-def contacts():
-    return render_template("contacts.html", title="Контакти")
-
-from app import app
 if __name__ == "__main__":
     app.run(debug=True)
