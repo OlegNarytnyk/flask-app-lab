@@ -1,0 +1,89 @@
+/* app/posts/static/css/posts.css */
+
+.posts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.posts-title {
+  font-weight: 700;
+  padding: 10px 14px;
+  background: #c9ff6a; /* як на прикладі */
+  border-radius: 6px;
+  margin: 0;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.post-card {
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.post-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-card-body {
+  padding: 12px 12px 14px;
+}
+
+.post-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.post-meta {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.post-card-text {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 12px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-soft {
+  display: inline-block;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  background: #f7f7f7;
+  color: #222;
+  font-size: 13px;
+}
+
+.btn-soft:hover {
+  background: #efefef;
+}
+
+@media (max-width: 992px) {
+  .posts-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 576px) {
+  .posts-grid { grid-template-columns: 1fr; }
+}
