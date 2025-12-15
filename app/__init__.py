@@ -16,6 +16,7 @@ def create_app(config_name=None):
     app.config.from_object(config_by_name[config_name])
 
     db.init_app(app)
+    from app.posts import models
     migrate.init_app(app, db)
 
     from .posts import post_bp

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4" style="max-width: 900px;">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>{{ post.title }}</h2>
+    <div>
+      <a class="btn btn-outline-primary" href="{{ url_for('posts.update_post', id=post.id) }}">Update</a>
+      <a class="btn btn-outline-danger" href="{{ url_for('posts.delete_post', id=post.id) }}">Delete</a>
+    </div>
+  </div>
+
+  <p class="text-muted mb-2">{{ post.posted }} | Category: {{ post.category }}</p>
+  <hr>
+  <p style="white-space: pre-wrap;">{{ post.content }}</p>
+
+  <a class="btn btn-secondary mt-3" href="{{ url_for('posts.all_posts') }}">Back</a>
+</div>
+{% endblock %}

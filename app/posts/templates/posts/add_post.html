@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "macros/form_macros.html" import render_field %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 720px;">
+  <h2 class="mb-3">{{ page_title }}</h2>
+
+
+<form method="POST" novalidate>
+  {{ form.csrf_token }}
+
+  {{ render_field(form.title, class_="form-control") }}
+  {{ render_field(form.content, class_="form-control", rows=5) }}
+  {{ render_field(form.is_active) }}
+  {{ render_field(form.publish_date, class_="form-control") }}
+  {{ render_field(form.category, class_="form-select") }}
+
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+</div>
+{% endblock %}
