@@ -21,6 +21,8 @@ def create_app(config_name=None):
 
     from .posts import post_bp
     app.register_blueprint(post_bp, url_prefix="/posts")
+    from app.products import products_bp
+    app.register_blueprint(products_bp, url_prefix="/products")
 
     @app.errorhandler(404)
     def not_found(e):
