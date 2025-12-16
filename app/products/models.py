@@ -27,7 +27,7 @@ class Category(db.Model):
 
 class Product(db.Model):
     __tablename__ = "products"
-
+    active = db.Column(db.Boolean, nullable=False, default=True)
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     price: Mapped[float] = mapped_column(Float, nullable=False)
