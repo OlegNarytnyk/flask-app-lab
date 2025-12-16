@@ -6,6 +6,9 @@ from sqlalchemy import Integer, String, Float, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app import db
+from datetime import datetime
+from sqlalchemy import DateTime
+from sqlalchemy.sql import func
 
 
 class Category(db.Model):
@@ -32,6 +35,11 @@ class Product(db.Model):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     price: Mapped[float] = mapped_column(Float, nullable=False)
 
+    created_at = db.Column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now()
+    )
     # FK (product -> category)
     category_id: Mapped[Optional[int]] = mapped_column(
         Integer,
