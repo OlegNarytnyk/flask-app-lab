@@ -1,3 +1,4 @@
+# app/__init__.py
 import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -35,20 +36,29 @@ def create_app(config_name=None):
     migrate.init_app(app, db)
     bcrypt.init_app(app)
 
+    from .models import User
+    from .posts import models as posts_models
+    from .products import models as products_models
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return db.session.get(User, int(user_id))
+
     login_manager.init_app(app)
-    login_manager.login_view = "auth.login"
+    login_manager.login_view = "auth.login"          # ВАЖЛИВО: endpoint сторінки login
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
 
-
+    # реєстрація blueprints
     from .posts import post_bp
     app.register_blueprint(post_bp, url_prefix="/posts")
 
     from .products import products_bp
     app.register_blueprint(products_bp, url_prefix="/products")
 
-    from app.auth import auth_bp
+    from .auth import auth_bp
     app.register_blueprint(auth_bp)
+
     @app.errorhandler(404)
     def not_found(e):
         return render_template("404.html"), 404
