@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Welcome, {{ user.username }}!</h2>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+      <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+      <p class="mb-0"><strong>ID:</strong> {{ user.id }}</p>
+    </div>
+  </div>
+
+  <a class="btn btn-danger mt-3" href="{{ url_for('auth.logout') }}">Logout</a>
+</div>
+{% endblock %}

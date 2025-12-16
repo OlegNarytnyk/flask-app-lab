@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String
-from app import db, bcrypt
+from app import bcrypt
+from app import db, login_manager
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -15,6 +17,10 @@ class User(db.Model):
         cascade="all, delete-orphan"
     )
 
+    @property
+    def is_active(self) -> bool:
+        return True
+
     def set_password(self, raw_password: str) -> None:
         self.password = bcrypt.generate_password_hash(raw_password).decode("utf-8")
 
@@ -23,3 +29,6 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return f"<User {self.username}>"
+@login_manager.user_loader
+def load_user(user_id: str):
+    return db.session.get(User, int(user_id))

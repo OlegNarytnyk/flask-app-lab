@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 
@@ -22,33 +23,34 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
 bcrypt = Bcrypt()
+login_manager = LoginManager()
 
 def create_app(config_name=None):
-    flask_app = Flask(__name__)   # <-- НЕ app
+    app = Flask(__name__)
 
     config_name = config_name or os.environ.get("FLASK_CONFIG", "development")
-    flask_app.config.from_object(config_by_name[config_name])
+    app.config.from_object(config_by_name[config_name])
 
-    db.init_app(flask_app)
-    migrate.init_app(flask_app, db)
-    bcrypt.init_app(flask_app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
 
-    # імпорт моделей після init_app
-    import app.models  # noqa
-    import app.posts.models  # noqa
-    import app.products.models  # noqa
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = "Please log in to access this page."
+    login_manager.login_message_category = "warning"
 
-    from app.posts import post_bp
-    flask_app.register_blueprint(post_bp, url_prefix="/posts")
 
-    from app.products import products_bp
-    flask_app.register_blueprint(products_bp, url_prefix="/products")
+    from .posts import post_bp
+    app.register_blueprint(post_bp, url_prefix="/posts")
+
+    from .products import products_bp
+    app.register_blueprint(products_bp, url_prefix="/products")
 
     from app.auth import auth_bp
-    flask_app.register_blueprint(auth_bp, url_prefix="/auth")
-
-    @flask_app.errorhandler(404)
+    app.register_blueprint(auth_bp)
+    @app.errorhandler(404)
     def not_found(e):
         return render_template("404.html"), 404
 
-    return flask_app
+    return app
