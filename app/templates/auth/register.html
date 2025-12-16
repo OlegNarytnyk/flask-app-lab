@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 520px;">
+  <h2 class="mb-3">Register</h2>
+
+  <form method="POST" novalidate>
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+      <label class="form-label">{{ form.username.label }}</label>
+      {{ form.username(class="form-control", placeholder="username") }}
+      {% for err in form.username.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{ form.email.label }}</label>
+      {{ form.email(class="form-control", placeholder="email") }}
+      {% for err in form.email.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{ form.password.label }}</label>
+      {{ form.password(class="form-control", placeholder="password") }}
+      {% for err in form.password.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{ form.confirm_password.label }}</label>
+      {{ form.confirm_password(class="form-control", placeholder="confirm password") }}
+      {% for err in form.confirm_password.errors %}
+        <div class="text-danger small">{{ err }}</div>
+      {% endfor %}
+    </div>
+
+    {{ form.submit(class="btn btn-success w-100") }}
+  </form>
+</div>
+{% endblock %}

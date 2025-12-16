@@ -2,12 +2,12 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 
 from .config import config_by_name
 
-# naming convention для constraint-ів (PK/UK/FK/CK/IX)
 class Base(DeclarativeBase):
     metadata = MetaData(
         naming_convention={
@@ -21,30 +21,34 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
+bcrypt = Bcrypt()
 
 def create_app(config_name=None):
-    app = Flask(__name__)
+    flask_app = Flask(__name__)   # <-- НЕ app
 
     config_name = config_name or os.environ.get("FLASK_CONFIG", "development")
-    app.config.from_object(config_by_name[config_name])
+    flask_app.config.from_object(config_by_name[config_name])
 
-    db.init_app(app)
+    db.init_app(flask_app)
+    migrate.init_app(flask_app, db)
+    bcrypt.init_app(flask_app)
 
-    # ВАЖЛИВО: не "import app.models", а відносні імпорти
-    from . import models              # app/models.py (User)
-    from .posts import models as posts_models
-    from .products import models as products_models
+    # імпорт моделей після init_app
+    import app.models  # noqa
+    import app.posts.models  # noqa
+    import app.products.models  # noqa
 
-    migrate.init_app(app, db)
+    from app.posts import post_bp
+    flask_app.register_blueprint(post_bp, url_prefix="/posts")
 
-    from .posts import post_bp
-    app.register_blueprint(post_bp, url_prefix="/posts")
+    from app.products import products_bp
+    flask_app.register_blueprint(products_bp, url_prefix="/products")
 
-    from .products import products_bp
-    app.register_blueprint(products_bp, url_prefix="/products")
+    from app.auth import auth_bp
+    flask_app.register_blueprint(auth_bp, url_prefix="/auth")
 
-    @app.errorhandler(404)
+    @flask_app.errorhandler(404)
     def not_found(e):
         return render_template("404.html"), 404
 
-    return app
+    return flask_app

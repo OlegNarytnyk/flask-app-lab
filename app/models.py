@@ -1,6 +1,6 @@
-from app import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String
+from app import db, bcrypt
 
 class User(db.Model):
     __tablename__ = "users"
@@ -14,6 +14,12 @@ class User(db.Model):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+
+    def set_password(self, raw_password: str) -> None:
+        self.password = bcrypt.generate_password_hash(raw_password).decode("utf-8")
+
+    def check_password(self, raw_password: str) -> bool:
+        return bcrypt.check_password_hash(self.password, raw_password)
 
     def __repr__(self) -> str:
         return f"<User {self.username}>"
