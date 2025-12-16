@@ -14,8 +14,15 @@
   {{ render_field(form.is_active) }}
   {{ render_field(form.publish_date, class_="form-control") }}
   {{ render_field(form.category, class_="form-select") }}
-
+  <div class="mb-3">
+  {{ form.author_id.label(class="form-label") }}
+  {{ form.author_id(class="form-select") }}
+  {% for err in form.author_id.errors %}
+    <div class="text-danger small">{{ err }}</div>
+  {% endfor %}
   {{ form.submit(class="btn btn-primary") }}
+
+</div>
 </form>
 </div>
 {% endblock %}

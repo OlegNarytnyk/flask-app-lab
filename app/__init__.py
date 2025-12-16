@@ -22,7 +22,6 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate()
 
-
 def create_app(config_name=None):
     app = Flask(__name__)
 
@@ -30,12 +29,18 @@ def create_app(config_name=None):
     app.config.from_object(config_by_name[config_name])
 
     db.init_app(app)
-    from app.posts import models
+
+    # ВАЖЛИВО: не "import app.models", а відносні імпорти
+    from . import models              # app/models.py (User)
+    from .posts import models as posts_models
+    from .products import models as products_models
+
     migrate.init_app(app, db)
 
     from .posts import post_bp
     app.register_blueprint(post_bp, url_prefix="/posts")
-    from app.products import products_bp
+
+    from .products import products_bp
     app.register_blueprint(products_bp, url_prefix="/products")
 
     @app.errorhandler(404)

@@ -8,6 +8,19 @@
       <a class="btn btn-outline-danger" href="{{ url_for('posts.delete_post', id=post.id) }}">Delete</a>
     </div>
   </div>
+  <p><b>Author:</b>
+  {% if post.user %}{{ post.user.username }}{% else %}Anonymous{% endif %}
+</p>
+
+<p><b>Tags:</b>
+  {% if post.tags %}
+    {% for tag in post.tags %}
+      <span class="badge bg-secondary">{{ tag.name }}</span>
+    {% endfor %}
+  {% else %}
+    <span class="text-muted">No tags</span>
+  {% endif %}
+</p>
 
   <p class="text-muted mb-2">{{ post.posted }} | Category: {{ post.category }}</p>
   <hr>

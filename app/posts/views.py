@@ -3,6 +3,8 @@ from app import db
 from . import post_bp
 from .forms import PostForm
 from .models import Post
+from app.models import User
+from app.posts.models import Tag
 
 
 @post_bp.route("/", methods=["GET"])
@@ -15,6 +17,14 @@ def all_posts():
 def create_post():
     form = PostForm()
 
+    # 1) choices для AUTHOR (має бути ДО validate_on_submit)
+    authors = db.session.query(User).order_by(User.id).all()
+    form.author_id.choices = [(a.id, a.username) for a in authors]
+
+    # 2) choices для TAGS (в тебе вже було правильно, але залишаємо тут же)
+    tags = db.session.query(Tag).order_by(Tag.id).all()
+    form.tags.choices = [(t.id, t.name) for t in tags]
+
     if form.validate_on_submit():
         author = session.get("user", "Anonymous")
 
@@ -23,7 +33,11 @@ def create_post():
             content=form.content.data,
             posted=form.publish_date.data,
             category=form.category.data,
+            user_id=form.author_id.data,   # <-- ОЦЕ ВАЖЛИВО: зберігаємо автора
         )
+
+        selected_tags = db.session.query(Tag).filter(Tag.id.in_(form.tags.data)).all()
+        new_post.tags = selected_tags
 
         if hasattr(new_post, "is_active"):
             new_post.is_active = bool(form.is_active.data)
@@ -36,11 +50,11 @@ def create_post():
         flash("Post added successfully", "success")
         return redirect(url_for("posts.all_posts"))
 
-    if request.method == "POST":
+    if form.is_submitted() and not form.validate():
+        print("ERRORS:", form.errors)
         flash("Enter the correct data in the form!", "danger")
 
     return render_template("posts/add_post.html", form=form, page_title="Create Post")
-
 
 @post_bp.route("/<int:id>", methods=["GET"])
 def detail_post(id: int):
@@ -57,9 +71,15 @@ def update_post(id: int):
         abort(404)
 
     form = PostForm(obj=post)
+    authors = db.session.query(User).order_by(User.id).all()
+    form.author_id.choices = [(a.id, a.username) for a in authors]
+    tags = db.session.query(Tag).order_by(Tag.id).all()
+    form.tags.choices = [(t.id, t.name) for t in tags]
 
 
     if request.method == "GET":
+        form.author_id.data = post.user_id
+        form.tags.data = [t.id for t in post.tags]
         if getattr(post, "posted", None):
             form.publish_date.data = post.posted
 
@@ -71,6 +91,10 @@ def update_post(id: int):
         post.content = form.content.data
         post.category = form.category.data
         post.posted = form.publish_date.data
+        post.user_id = form.author_id.data
+
+        selected_tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+        post.tags = selected_tags
 
         if hasattr(post, "is_active"):
             post.is_active = bool(form.is_active.data)
@@ -79,7 +103,8 @@ def update_post(id: int):
         flash("Post updated successfully", "success")
         return redirect(url_for("posts.detail_post", id=post.id))
 
-    if request.method == "POST":
+    if form.is_submitted() and not form.validate():
+        print("ERRORS:", form.errors)
         flash("Enter the correct data in the form!", "danger")
 
     return render_template("posts/add_post.html", form=form, page_title="Update Post")
