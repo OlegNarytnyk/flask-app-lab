@@ -1,10 +1,13 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String
 from app import bcrypt
 from app import db, login_manager
+from datetime import datetime, timezone
+from sqlalchemy import String, DateTime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
+from app import db
 
-class User(db.Model, UserMixin):
+
+class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -13,8 +16,17 @@ class User(db.Model, UserMixin):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
 
     posts: Mapped[list["Post"]] = relationship(
+        "Post",
         back_populates="user",
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
+    )
+
+    image: Mapped[str] = mapped_column(String(255), nullable=True, default="profile_default.jpg")
+    about_me: Mapped[str | None] = mapped_column(String(140), nullable=True)
+    last_seen: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        default=lambda: datetime.now(timezone.utc),
     )
 
     @property

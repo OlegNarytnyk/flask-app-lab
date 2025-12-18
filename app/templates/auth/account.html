@@ -1,19 +1,57 @@
 {% extends "base.html" %}
-
 {% block title %}Account{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-  <h2>Welcome, {{ user.username }}!</h2>
+  <h2>Account</h2>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
-      <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
-      <p class="mb-0"><strong>ID:</strong> {{ user.id }}</p>
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <img src="{{ url_for('static', filename='profile_pics/' ~ user.image) }}"
+         alt="avatar" width="96" height="96" style="border-radius:50%; object-fit:cover;">
+    <div>
+      <div><strong>{{ user.username }}</strong></div>
+      <div class="text-muted">{{ user.email }}</div>
+      {% if user.about_me %}
+        <div class="mt-2">{{ user.about_me }}</div>
+      {% endif %}
+      {% if user.last_seen %}
+        <div class="text-muted mt-1">Last seen: {{ user.last_seen }}</div>
+      {% endif %}
     </div>
   </div>
 
-  <a class="btn btn-danger mt-3" href="{{ url_for('auth.logout') }}">Logout</a>
+  <div class="card p-3">
+    <h5 class="mb-3">Update profile</h5>
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="mb-3">
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control") }}
+        {% for e in form.username.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+        {% for e in form.email.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.about_me.label(class="form-label") }}
+        {{ form.about_me(class="form-control") }}
+        {% for e in form.about_me.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.picture.label(class="form-label") }}
+        {{ form.picture(class="form-control") }}
+        {% for e in form.picture.errors %}<div class="text-danger">{{ e }}</div>{% endfor %}
+      </div>
+
+      {{ form.submit(class="btn btn-primary") }}
+      <a class="btn btn-outline-secondary ms-2" href="{{ url_for('auth.change_password') }}">Change password</a>
+    </form>
+  </div>
 </div>
 {% endblock %}
